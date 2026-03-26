@@ -19,3 +19,6 @@ Thumbs.db
 
 # Astro
 .astro/
+
+# Local notes
+claude.md
