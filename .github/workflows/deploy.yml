@@ -28,7 +28,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.cluster130.hosting.ovh.net
-          username: simulat@ftp.cluster130.hosting.ovh.net
+          username: simulat
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /www/
