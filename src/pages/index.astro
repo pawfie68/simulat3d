@@ -44,7 +44,56 @@ const statusDot = (status: string) =>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulat3D — Engineering & Simulation</title>
+
+<!-- SEO podstawowe -->
+<title>Simulat3D — Symulatory Lotnicze, Druk 3D, Elektronika | simulat3d.eu</title>
+<meta name="description" content="Projektujemy profesjonalne symulatory kokpitów lotniczych (A320, A330, B737), realizujemy druk 3D, projektowanie PCB i systemy embedded. Polska firma inżynierska.">
+<meta name="keywords" content="symulatory lotnicze, symulator A320, symulator A330, druk 3D, projektowanie PCB, modelowanie 3D, symulator kokpitu, Simulat3D, flight simulator, cockpit simulator">
+<meta name="author" content="Simulat3D">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://simulat3d.eu/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://simulat3d.eu/">
+<meta property="og:title" content="Simulat3D — Symulatory Lotnicze, Druk 3D, Elektronika">
+<meta property="og:description" content="Projektujemy profesjonalne symulatory kokpitów lotniczych, realizujemy druk 3D, projektowanie PCB i systemy embedded. Polska firma inżynierska.">
+<meta property="og:image" content="https://simulat3d.eu/og-image.jpg">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:site_name" content="Simulat3D">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Simulat3D — Symulatory Lotnicze, Druk 3D, Elektronika">
+<meta name="twitter:description" content="Projektujemy profesjonalne symulatory kokpitów lotniczych, realizujemy druk 3D i projektowanie PCB.">
+<meta name="twitter:image" content="https://simulat3d.eu/og-image.jpg">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Simulat3D",
+  "url": "https://simulat3d.eu",
+  "logo": "https://simulat3d.eu/logo-full.svg",
+  "email": "info@simulat3d.eu",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "PL"
+  },
+  "description": "Firma inżynierska projektująca symulatory kokpitów lotniczych, realizująca druk 3D, projektowanie PCB i systemy embedded.",
+  "sameAs": ["https://github.com/pawfie68/simulat3d"],
+  "offers": [
+    { "@type": "Offer", "name": "Symulator Airbus A320" },
+    { "@type": "Offer", "name": "Symulator Airbus A330" },
+    { "@type": "Offer", "name": "Druk 3D" },
+    { "@type": "Offer", "name": "Projektowanie PCB" },
+    { "@type": "Offer", "name": "Modelowanie 3D" }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
@@ -422,6 +471,25 @@ const statusDot = (status: string) =>
   .footer-links a:hover { color: var(--c-muted); }
   .footer-copy { font-size: 12px; color: var(--c-dim); }
 
+  /* ── LANG SWITCH ─────────────────────────────────── */
+  .lang-switch {
+    display: flex; align-items: center; gap: 2px;
+    border: 1px solid var(--c-border2);
+    border-radius: 3px; overflow: hidden; margin-left: 12px;
+    flex-shrink: 0;
+  }
+  .lang-btn {
+    font-family: var(--font-head); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em;
+    background: none; border: none; cursor: pointer;
+    padding: 5px 10px; color: var(--c-muted);
+    transition: background .15s, color .15s;
+  }
+  .lang-btn.active {
+    background: var(--c-accent); color: #000;
+  }
+  .lang-btn:not(.active):hover { color: var(--c-text); }
+
   /* ── WIP BANNER ──────────────────────────────────── */
   .wip-banner {
     position: fixed;
@@ -452,6 +520,47 @@ const statusDot = (status: string) =>
     font-size: 15px; color: var(--c-muted); line-height: 1.7;
   }
 
+  /* ── COOKIE BANNER ───────────────────────────────── */
+  .cookie-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+    background: var(--c-bg3);
+    border-top: 1px solid var(--c-border2);
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .cookie-bar.visible { transform: translateY(0); }
+  .cookie-bar p {
+    font-size: 13px; color: var(--c-muted); line-height: 1.6;
+    max-width: 640px; flex: 1;
+  }
+  .cookie-bar p a {
+    color: var(--c-accent); text-decoration: none;
+  }
+  .cookie-bar p a:hover { text-decoration: underline; }
+  .cookie-actions {
+    display: flex; gap: 10px; flex-shrink: 0;
+  }
+  .cookie-accept {
+    font-family: var(--font-head); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--c-accent); color: #000;
+    border: none; padding: 9px 22px; border-radius: 3px; cursor: pointer;
+    transition: opacity .2s;
+  }
+  .cookie-accept:hover { opacity: .85; }
+  .cookie-reject {
+    font-family: var(--font-head); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: none; color: var(--c-muted);
+    border: 1px solid var(--c-dim); padding: 9px 22px; border-radius: 3px; cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .cookie-reject:hover { border-color: var(--c-muted); color: var(--c-text); }
+
   @media (max-width: 768px) {
     nav { padding: 0 20px; }
     nav .nav-links { display: none; }
@@ -461,6 +570,9 @@ const statusDot = (status: string) =>
     footer { padding: 24px 20px; flex-direction: column; text-align: center; }
     .tech-strip { padding: 20px; }
     .wip-banner { padding: 24px 20px; }
+    .cookie-bar { padding: 16px 20px; flex-direction: column; align-items: flex-start; }
+    .cookie-actions { width: 100%; }
+    .cookie-accept, .cookie-reject { flex: 1; text-align: center; }
   }
 
 </style>
@@ -479,33 +591,39 @@ const statusDot = (status: string) =>
 <path style="fill:#ffffff;fill-opacity:1.0" d="m 816.14385,345.47825 c -15.21173,-0.29194 -27.16785,-0.62971 -26.56913,-0.75062 2.28195,-0.46082 15.9084,-9.95567 21.31628,-14.85309 18.09495,-16.38689 20.24737,-21.007 47.64727,-102.27226 7.19235,-21.33161 13.4667,-39.51302 13.9431,-40.40314 0.77205,-1.44268 4.42493,-1.68466 33.64493,-2.22876 18.02835,-0.3357 35.78182,-0.85511 39.45225,-1.15425 l 6.6735,-0.54388 -0.65303,2.73961 c -0.3591,1.50678 -5.7081,18.4608 -11.8866,37.6756 -17.58135,54.67704 -21.67192,67.68828 -21.67192,68.93446 0,0.64072 1.98487,1.43102 4.43887,1.76737 7.6674,1.05094 203.93413,0.73473 213.17113,-0.34344 11.9745,-1.3977 18.5588,-4.10631 24.5455,-10.09746 6.0409,-6.04548 8.017,-10.18221 16.9648,-35.5146 27.4621,-77.74911 28.4774,-82.76064 17.7936,-87.83041 -5.582,-2.64884 -27.3487,-3.12851 -178.5423,-3.9346 l -134.04978,-0.71468 -0.41924,-14.65555 c -0.40478,-14.15097 -0.53933,-14.94776 -3.9093,-23.14318 -1.95255,-4.74861 -3.08768,-8.73631 -2.5767,-9.05211 0.50234,-0.31046 47.29942,-1.01238 103.99357,-1.55984 110.95595,-1.07143 225.43795,-0.54775 248.16165,1.13517 31.2992,2.31802 45.7808,6.76262 55.1492,16.92602 4.923,5.34083 6.5327,8.48201 7.7662,15.1547 1.842,9.96442 0.3013,15.34499 -26.5252,92.6326 -19.1134,55.06614 -22.1744,62.78708 -28.7304,72.46792 -16.0388,23.68341 -42.9107,37.16796 -78.9771,39.6314 -14.1079,0.9636 -289.81302,0.95309 -340.15115,-0.013 z" />
 </svg></a>
   <ul class="nav-links">
-    <li><a href="#simulators">Symulatory</a></li>
-    <li><a href="#uslugi">Usługi</a></li>
-    <li><a href="#o-firmie">O firmie</a></li>
-    <li><a href="#sklep">Sklep</a></li>
-    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="#simulators" data-i18n="nav-sim">Symulatory</a></li>
+    <li><a href="#uslugi" data-i18n="nav-uslugi">Usługi</a></li>
+    <li><a href="#o-firmie" data-i18n="nav-ofirmie">O firmie</a></li>
+    <li><a href="#sklep" data-i18n="nav-sklep">Sklep</a></li>
+    <li><a href="#kontakt" data-i18n="nav-kontakt">Kontakt</a></li>
   </ul>
-  <a href="#kontakt" class="nav-cta">Napisz do nas</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="#kontakt" class="nav-cta" data-i18n="nav-cta">Napisz do nas</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" id="btn-pl" onclick="setLang('pl')">PL</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
 </nav>
 
 <header class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-badge">Inżynieria / Symulacje / Druk 3D</div>
+  <div class="hero-badge" data-i18n="hero-badge">Inżynieria / Symulacje / Druk 3D</div>
   <h1>Engineering<br>beyond<br><em>limits</em></h1>
-  <p class="hero-sub">
+  <p class="hero-sub" data-i18n="hero-sub">
     Projektujemy symulatory lotnicze, realizujemy projekty 3D, prototypy i systemy embedded — od modelu do gotowego produktu.
   </p>
   <div class="hero-actions">
-    <a href="#simulators" class="btn-primary">Zobacz symulatory</a>
-    <a href="#uslugi" class="btn-secondary">Nasze usługi</a>
+    <a href="#simulators" class="btn-primary" data-i18n="hero-btn1">Zobacz symulatory</a>
+    <a href="#uslugi" class="btn-secondary" data-i18n="hero-btn2">Nasze usługi</a>
   </div>
-  <div class="hero-scroll">Przewiń w dół</div>
+  <div class="hero-scroll" data-i18n="hero-scroll">Przewiń w dół</div>
 </header>
 
 <div class="tech-strip">
-  <span class="tech-strip-label">Technologie</span>
+  <span class="tech-strip-label" data-i18n="tech-label">Technologie</span>
   <div class="tech-items">
     <span class="tech-item">Airbus A320</span>
     <span class="tech-item">Airbus A330</span>
@@ -520,9 +638,9 @@ const statusDot = (status: string) =>
 
 <section id="simulators">
   <div class="sim-intro">
-    <div class="section-label">Symulatory lotnicze</div>
-    <h2 class="section-title">Linia<br>symulatorów<br><em>Simulat3D</em></h2>
-    <p>Profesjonalne symulatory kokpitów pasażerskich — budowane z pasji do lotnictwa i precyzji inżynierskiej. Każdy element projektowany i drukowany we własnym zakresie.</p>
+    <div class="section-label" data-i18n="sim-label">Symulatory lotnicze</div>
+    <h2 class="section-title" data-i18n="sim-title">Linia<br>symulatorów<br><em>Simulat3D</em></h2>
+    <p data-i18n="sim-intro">Profesjonalne symulatory kokpitów pasażerskich — budowane z pasji do lotnictwa i precyzji inżynierskiej. Każdy element projektowany i drukowany we własnym zakresie.</p>
   </div>
   <div class="sim-cards">
     {symulatory.map(sim => (
@@ -543,8 +661,8 @@ const statusDot = (status: string) =>
 </section>
 
 <section id="uslugi">
-  <div class="section-label">Usługi</div>
-  <h2 class="section-title">Co<br><em>robimy</em></h2>
+  <div class="section-label" data-i18n="uslugi-label">Usługi</div>
+  <h2 class="section-title" data-i18n="uslugi-title">Co<br><em>robimy</em></h2>
   <div class="services-grid">
     {uslugi.map(u => (
       <div class="service-item">
@@ -556,57 +674,57 @@ const statusDot = (status: string) =>
 </section>
 
 <section id="o-firmie">
-  <div class="section-label">O firmie</div>
+  <div class="section-label" data-i18n="about-label">O firmie</div>
   <div class="about-grid">
     <div class="about-text">
-      <h2 class="section-title">Inżynieria<br>z <em>pasją</em></h2>
-      <p style="margin-top:24px"><strong>Simulat3D</strong> to firma inżynierska łącząca świat symulacji lotniczych z zaawansowanym projektowaniem i produkcją sprzętową.</p>
-      <p>Budujemy profesjonalne symulatory kokpitów pasażerskich, projektujemy elektronikę, tworzymy oprogramowanie i realizujemy druk 3D — wszystko pod jednym dachem.</p>
-      <p>Każdy produkt powstaje z myślą o <strong>wierności oryginałowi</strong> i trwałości — od modelu CAD przez płytkę PCB aż po gotowy panel kokpitu.</p>
-      <a href="#kontakt" class="btn-primary" style="display:inline-block;margin-top:12px">Skontaktuj się</a>
+      <h2 class="section-title" data-i18n="about-title">Inżynieria<br>z <em>pasją</em></h2>
+      <p style="margin-top:24px" data-i18n="about-p1"><strong>Simulat3D</strong> to firma inżynierska łącząca świat symulacji lotniczych z zaawansowanym projektowaniem i produkcją sprzętową.</p>
+      <p data-i18n="about-p2">Budujemy profesjonalne symulatory kokpitów pasażerskich, projektujemy elektronikę, tworzymy oprogramowanie i realizujemy druk 3D — wszystko pod jednym dachem.</p>
+      <p data-i18n="about-p3">Każdy produkt powstaje z myślą o <strong>wierności oryginałowi</strong> i trwałości — od modelu CAD przez płytkę PCB aż po gotowy panel kokpitu.</p>
+      <a href="#kontakt" class="btn-primary" style="display:inline-block;margin-top:12px" data-i18n="about-cta">Skontaktuj się</a>
     </div>
     <div class="about-stats">
       <div class="stat-item">
         <div class="stat-number">A320</div>
-        <div class="stat-label">Pierwszy symulator</div>
+        <div class="stat-label" data-i18n="stat-a320">Pierwszy symulator</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">A330</div>
-        <div class="stat-label">Wide-body sim</div>
+        <div class="stat-label" data-i18n="stat-a330">Wide-body sim</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">1:1</div>
-        <div class="stat-label">Skala kokpitu</div>
+        <div class="stat-label" data-i18n="stat-scale">Skala kokpitu</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">PL/EU</div>
-        <div class="stat-label">Produkcja lokalna</div>
+        <div class="stat-label" data-i18n="stat-prod">Produkcja lokalna</div>
       </div>
     </div>
   </div>
 </section>
 
 <section id="sklep">
-  <div class="section-label">Sklep</div>
+  <div class="section-label" data-i18n="shop-label">Sklep</div>
   <div class="shop-teaser">
-    <h2 class="section-title">Sklep<br><em>wkrótce</em></h2>
-    <p>Pracujemy nad uruchomieniem sklepu online z panelami, komponentami i akcesoriami do symulatorów. Realizacja przez Shopify — bezpieczne płatności, szybka wysyłka.</p>
-    <a href="#kontakt" class="btn-secondary">Zapytaj o dostępność</a>
+    <h2 class="section-title" data-i18n="shop-title">Sklep<br><em>wkrótce</em></h2>
+    <p data-i18n="shop-p">Pracujemy nad uruchomieniem sklepu online z panelami, komponentami i akcesoriami do symulatorów. Realizacja przez Shopify — bezpieczne płatności, szybka wysyłka.</p>
+    <a href="#kontakt" class="btn-secondary" data-i18n="shop-btn">Zapytaj o dostępność</a>
   </div>
   <div class="shop-placeholder" style="max-width:700px;margin:0 auto">
-    <p style="color:var(--c-dim);font-size:13px;letter-spacing:0.06em;text-transform:uppercase">
+    <p style="color:var(--c-dim);font-size:13px;letter-spacing:0.06em;text-transform:uppercase" data-i18n="shop-placeholder">
       Tutaj pojawi się sklep Shopify — komponenty, panele, zestawy DIY
     </p>
   </div>
 </section>
 
 <section id="kontakt">
-  <div class="section-label">Kontakt</div>
+  <div class="section-label" data-i18n="contact-label">Kontakt</div>
   <div class="contact-grid">
     <div class="contact-info">
-      <h2 class="section-title" style="margin-bottom:40px">Napisz<br>do <em>nas</em></h2>
+      <h2 class="section-title" style="margin-bottom:40px" data-i18n="contact-title">Napisz<br>do <em>nas</em></h2>
       <div class="contact-line">
-        <span>Strona</span>
+        <span data-i18n="contact-website">Strona</span>
         <a href={`https://${kontakt.website}`}>{kontakt.website}</a>
       </div>
       <div class="contact-line">
@@ -614,17 +732,17 @@ const statusDot = (status: string) =>
         <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a>
       </div>
       <div class="contact-line">
-        <span>Lokalizacja</span>
+        <span data-i18n="contact-location">Lokalizacja</span>
         <span>{kontakt.location}</span>
       </div>
     </div>
     <div>
       <form class="contact-form" onsubmit="return false">
-        <input type="text" placeholder="Imię i nazwisko" />
+        <input type="text" data-i18n-ph="form-name" placeholder="Imię i nazwisko" />
         <input type="email" placeholder="E-mail" />
-        <input type="text" placeholder="Temat (np. A320 Simulator, PCB design...)" />
-        <textarea placeholder="Wiadomość..."></textarea>
-        <button type="submit" class="btn-primary" style="width:fit-content;border:none;cursor:pointer">
+        <input type="text" data-i18n-ph="form-topic" placeholder="Temat (np. A320 Simulator, PCB design...)" />
+        <textarea data-i18n-ph="form-msg" placeholder="Wiadomość..."></textarea>
+        <button type="submit" class="btn-primary" style="width:fit-content;border:none;cursor:pointer" data-i18n="form-submit">
           Wyślij wiadomość
         </button>
       </form>
@@ -637,17 +755,178 @@ const statusDot = (status: string) =>
     <img src="/simulat3d/logo-full.svg" alt="Simulat3D" height="60" style="display:block">
   </a>
   <ul class="footer-links">
-    <li><a href="#simulators">Symulatory</a></li>
-    <li><a href="#uslugi">Usługi</a></li>
-    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="#simulators" data-i18n="footer-sim">Symulatory</a></li>
+    <li><a href="#uslugi" data-i18n="footer-uslugi">Usługi</a></li>
+    <li><a href="#kontakt" data-i18n="footer-kontakt">Kontakt</a></li>
   </ul>
-  <span class="footer-copy">© 2025 Simulat3D. Wszelkie prawa zastrzeżone.</span>
+  <span class="footer-copy" data-i18n="footer-copy">© 2025 Simulat3D. Wszelkie prawa zastrzeżone.</span>
 </footer>
 
-<div class="wip-banner">
-  <span class="wip-banner-label">Strona w przebudowie</span>
-  <p>Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!</p>
+<div class="cookie-bar" id="cookie-bar">
+  <p id="cookie-text">
+    Ta strona używa plików cookie w celach analitycznych i funkcjonalnych.
+    Kontynuując, wyrażasz zgodę na ich użycie.
+  </p>
+  <div class="cookie-actions">
+    <button class="cookie-accept" id="cookie-accept">Akceptuję</button>
+    <button class="cookie-reject" id="cookie-reject">Tylko niezbędne</button>
+  </div>
 </div>
+
+<div class="wip-banner">
+  <span class="wip-banner-label" data-i18n="wip-label">Strona w przebudowie</span>
+  <p data-i18n="wip-text">Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!</p>
+</div>
+
+<script>
+const t = {
+  pl: {
+    'nav-sim':       'Symulatory',
+    'nav-uslugi':    'Usługi',
+    'nav-ofirmie':   'O firmie',
+    'nav-sklep':     'Sklep',
+    'nav-kontakt':   'Kontakt',
+    'nav-cta':       'Napisz do nas',
+    'hero-badge':    'Inżynieria / Symulacje / Druk 3D',
+    'hero-sub':      'Projektujemy symulatory lotnicze, realizujemy projekty 3D, prototypy i systemy embedded — od modelu do gotowego produktu.',
+    'hero-btn1':     'Zobacz symulatory',
+    'hero-btn2':     'Nasze usługi',
+    'hero-scroll':   'Przewiń w dół',
+    'tech-label':    'Technologie',
+    'sim-label':     'Symulatory lotnicze',
+    'sim-title':     'Linia<br>symulatorów<br><em>Simulat3D</em>',
+    'sim-intro':     'Profesjonalne symulatory kokpitów pasażerskich — budowane z pasji do lotnictwa i precyzji inżynierskiej. Każdy element projektowany i drukowany we własnym zakresie.',
+    'uslugi-label':  'Usługi',
+    'uslugi-title':  'Co<br><em>robimy</em>',
+    'about-label':   'O firmie',
+    'about-title':   'Inżynieria<br>z <em>pasją</em>',
+    'about-p1':      '<strong>Simulat3D</strong> to firma inżynierska łącząca świat symulacji lotniczych z zaawansowanym projektowaniem i produkcją sprzętową.',
+    'about-p2':      'Budujemy profesjonalne symulatory kokpitów pasażerskich, projektujemy elektronikę, tworzymy oprogramowanie i realizujemy druk 3D — wszystko pod jednym dachem.',
+    'about-p3':      'Każdy produkt powstaje z myślą o <strong>wierności oryginałowi</strong> i trwałości — od modelu CAD przez płytkę PCB aż po gotowy panel kokpitu.',
+    'about-cta':     'Skontaktuj się',
+    'stat-a320':     'Pierwszy symulator',
+    'stat-a330':     'Wide-body sim',
+    'stat-scale':    'Skala kokpitu',
+    'stat-prod':     'Produkcja lokalna',
+    'shop-label':    'Sklep',
+    'shop-title':    'Sklep<br><em>wkrótce</em>',
+    'shop-p':        'Pracujemy nad uruchomieniem sklepu online z panelami, komponentami i akcesoriami do symulatorów. Realizacja przez Shopify — bezpieczne płatności, szybka wysyłka.',
+    'shop-btn':      'Zapytaj o dostępność',
+    'shop-placeholder': 'Tutaj pojawi się sklep Shopify — komponenty, panele, zestawy DIY',
+    'contact-label':    'Kontakt',
+    'contact-title':    'Napisz<br>do <em>nas</em>',
+    'contact-website':  'Strona',
+    'contact-location': 'Lokalizacja',
+    'form-name':     'Imię i nazwisko',
+    'form-topic':    'Temat (np. A320 Simulator, PCB design...)',
+    'form-msg':      'Wiadomość...',
+    'form-submit':   'Wyślij wiadomość',
+    'footer-sim':    'Symulatory',
+    'footer-uslugi': 'Usługi',
+    'footer-kontakt':'Kontakt',
+    'footer-copy':   '© 2025 Simulat3D. Wszelkie prawa zastrzeżone.',
+    'wip-label':     'Strona w przebudowie',
+    'wip-text':      'Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!',
+    'cookie-text':   'Ta strona używa plików cookie w celach analitycznych i funkcjonalnych. Kontynuując, wyrażasz zgodę na ich użycie.',
+    'cookie-accept': 'Akceptuję',
+    'cookie-reject': 'Tylko niezbędne',
+  },
+  en: {
+    'nav-sim':       'Simulators',
+    'nav-uslugi':    'Services',
+    'nav-ofirmie':   'About',
+    'nav-sklep':     'Shop',
+    'nav-kontakt':   'Contact',
+    'nav-cta':       'Contact us',
+    'hero-badge':    'Engineering / Simulation / 3D Printing',
+    'hero-sub':      'We design flight simulators, deliver 3D projects, prototypes and embedded systems — from model to finished product.',
+    'hero-btn1':     'View simulators',
+    'hero-btn2':     'Our services',
+    'hero-scroll':   'Scroll down',
+    'tech-label':    'Technologies',
+    'sim-label':     'Flight simulators',
+    'sim-title':     'Simulat3D<br>simulator<br><em>lineup</em>',
+    'sim-intro':     'Professional airliner cockpit simulators — built with passion for aviation and engineering precision. Every component designed and printed in-house.',
+    'uslugi-label':  'Services',
+    'uslugi-title':  'What we<br><em>do</em>',
+    'about-label':   'About us',
+    'about-title':   'Engineering<br>with <em>passion</em>',
+    'about-p1':      '<strong>Simulat3D</strong> is an engineering company combining the world of flight simulation with advanced design and hardware production.',
+    'about-p2':      'We build professional airliner cockpit simulators, design electronics, develop software and carry out 3D printing — all under one roof.',
+    'about-p3':      'Every product is made with <strong>authenticity</strong> and durability in mind — from CAD model through PCB to the finished cockpit panel.',
+    'about-cta':     'Get in touch',
+    'stat-a320':     'First simulator',
+    'stat-a330':     'Wide-body sim',
+    'stat-scale':    'Cockpit scale',
+    'stat-prod':     'Local production',
+    'shop-label':    'Shop',
+    'shop-title':    'Shop<br><em>coming soon</em>',
+    'shop-p':        'We are working on launching an online store with panels, components and accessories for simulators. Powered by Shopify — secure payments, fast shipping.',
+    'shop-btn':      'Ask about availability',
+    'shop-placeholder': 'Shopify store coming here — components, panels, DIY kits',
+    'contact-label':    'Contact',
+    'contact-title':    'Get<br>in <em>touch</em>',
+    'contact-website':  'Website',
+    'contact-location': 'Location',
+    'form-name':     'Full name',
+    'form-topic':    'Subject (e.g. A320 Simulator, PCB design...)',
+    'form-msg':      'Message...',
+    'form-submit':   'Send message',
+    'footer-sim':    'Simulators',
+    'footer-uslugi': 'Services',
+    'footer-kontakt':'Contact',
+    'footer-copy':   '© 2025 Simulat3D. All rights reserved.',
+    'wip-label':     'Site under renovation',
+    'wip-text':      'We are working on a new version of the website. Sorry for the inconvenience — check back soon!',
+    'cookie-text':   'This site uses cookies for analytics and functional purposes. By continuing, you agree to their use.',
+    'cookie-accept': 'Accept',
+    'cookie-reject': 'Essential only',
+  }
+};
+
+function setLang(lang) {
+  localStorage.setItem('lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[lang][key] !== undefined) el.innerHTML = t[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.dataset.i18nPh;
+    if (t[lang][key] !== undefined) el.placeholder = t[lang][key];
+  });
+  // cookie bar translations (not data-i18n tagged to avoid innerHTML on button)
+  const ct = document.getElementById('cookie-text');
+  const ca = document.getElementById('cookie-accept');
+  const cr = document.getElementById('cookie-reject');
+  if (ct) ct.textContent = t[lang]['cookie-text'];
+  if (ca) ca.textContent = t[lang]['cookie-accept'];
+  if (cr) cr.textContent = t[lang]['cookie-reject'];
+
+  document.getElementById('btn-pl').classList.toggle('active', lang === 'pl');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+}
+
+const saved = localStorage.getItem('lang') || 'pl';
+setLang(saved);
+
+// Cookie banner
+(function() {
+  const bar = document.getElementById('cookie-bar');
+  if (!bar) return;
+  if (!localStorage.getItem('cookie-consent')) {
+    setTimeout(() => bar.classList.add('visible'), 600);
+  }
+  document.getElementById('cookie-accept').addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'accepted');
+    bar.classList.remove('visible');
+  });
+  document.getElementById('cookie-reject').addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'rejected');
+    bar.classList.remove('visible');
+  });
+})();
+</script>
 
 </body>
 </html>
