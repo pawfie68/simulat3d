@@ -1,10 +1,9 @@
 backend:
   name: github
-  repo: TWOJ_USERNAME/simulat3d
+  repo: pawfie68/simulat3d
   branch: main
-
-# Wymagane dla GitHub Pages (bez backendu serwerowego)
-local_backend: false
+  base_url: https://simulat3d-oauth.pawfie68.workers.dev
+  auth_endpoint: /auth
 
 media_folder: public/images
 public_folder: /simulat3d/images
