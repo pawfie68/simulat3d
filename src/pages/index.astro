@@ -600,8 +600,8 @@ const statusDot = (status: string) =>
   <div style="display:flex;align-items:center;gap:12px">
     <a href="#kontakt" class="nav-cta" data-i18n="nav-cta">Napisz do nas</a>
     <div class="lang-switch">
-      <button class="lang-btn active" id="btn-pl" onclick="setLang('pl')">PL</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn active" id="btn-pl">PL</button>
+      <button class="lang-btn" id="btn-en">EN</button>
     </div>
   </div>
 </nav>
@@ -778,7 +778,7 @@ const statusDot = (status: string) =>
   <p data-i18n="wip-text">Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!</p>
 </div>
 
-<script>
+<script is:inline>
 const t = {
   pl: {
     'nav-sim':       'Symulatory',
@@ -909,6 +909,9 @@ function setLang(lang) {
 
 const saved = localStorage.getItem('lang') || 'pl';
 setLang(saved);
+
+document.getElementById('btn-pl').addEventListener('click', () => setLang('pl'));
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
 
 // Cookie banner
 (function() {
