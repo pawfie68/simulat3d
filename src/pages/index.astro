@@ -424,20 +424,24 @@ const statusDot = (status: string) =>
 
   /* ── WIP BANNER ──────────────────────────────────── */
   .wip-banner {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
     background: var(--c-bg3);
-    border-top: 1px solid rgba(245,158,11,0.3);
-    border-bottom: 1px solid rgba(245,158,11,0.3);
-    padding: 28px 48px;
+    border: 1px solid rgba(245,158,11,0.4);
+    box-shadow: 0 0 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,158,11,0.1);
+    padding: 40px 56px;
     text-align: center;
-  }
-  .wip-banner-inner {
-    display: inline-flex; flex-direction: column; align-items: center; gap: 10px;
-    max-width: 640px;
+    border-radius: 4px;
+    max-width: 480px; width: calc(100% - 48px);
+    pointer-events: none;
   }
   .wip-banner-label {
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: #f59e0b;
+    margin-bottom: 14px;
   }
   .wip-banner-label::before {
     content: ''; width: 7px; height: 7px; border-radius: 50%;
@@ -445,7 +449,7 @@ const statusDot = (status: string) =>
     animation: pulse 2s ease-in-out infinite;
   }
   .wip-banner p {
-    font-size: 15px; color: var(--c-muted); line-height: 1.6;
+    font-size: 15px; color: var(--c-muted); line-height: 1.7;
   }
 
   @media (max-width: 768px) {
@@ -499,13 +503,6 @@ const statusDot = (status: string) =>
   </div>
   <div class="hero-scroll">Przewiń w dół</div>
 </header>
-
-<div class="wip-banner">
-  <div class="wip-banner-inner">
-    <span class="wip-banner-label">Strona w przebudowie</span>
-    <p>Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce po odświeżony wygląd!</p>
-  </div>
-</div>
 
 <div class="tech-strip">
   <span class="tech-strip-label">Technologie</span>
@@ -646,6 +643,11 @@ const statusDot = (status: string) =>
   </ul>
   <span class="footer-copy">© 2025 Simulat3D. Wszelkie prawa zastrzeżone.</span>
 </footer>
+
+<div class="wip-banner">
+  <span class="wip-banner-label">Strona w przebudowie</span>
+  <p>Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!</p>
+</div>
 
 </body>
 </html>
