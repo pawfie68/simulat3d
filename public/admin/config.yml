@@ -40,7 +40,7 @@ collections:
     files:
       - label: "Dane kontaktowe"
         name: "kontakt"
-        file: "src/content/kontakt.json"
+        file: "src/data/kontakt.json"
         fields:
           - { label: "Email", name: "email", widget: "string" }
           - { label: "Strona www", name: "website", widget: "string" }

@@ -2,17 +2,23 @@
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
+function parseFrontmatter(content: string) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
-  const data = {};
-  match[1].split('\n').forEach(line => {
+  const data: Record<string, any> = {};
+  const lines = match[1].split('\n');
+  let currentKey = '';
+  let currentVal = '';
+  for (const line of lines) {
     const colonIdx = line.indexOf(':');
-    if (colonIdx === -1) return;
+    if (colonIdx === -1) continue;
     const key = line.slice(0, colonIdx).trim();
-    const val = line.slice(colonIdx + 1).trim().replace(/^"|"$/g, '');
-    if (key) data[key] = val;
-  });
+    const val = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, '');
+    if (key) {
+      data[key] = val;
+      currentKey = key;
+    }
+  }
   return data;
 }
 
@@ -28,7 +34,7 @@ const uslugi = readdirSync(uslugiDir)
   .map(f => parseFrontmatter(readFileSync(join(uslugiDir, f), 'utf8')))
   .sort((a, b) => Number(a.order) - Number(b.order));
 
-const kontakt = JSON.parse(readFileSync(join(process.cwd(), 'src/content/kontakt.json'), 'utf8'));
+const kontakt = JSON.parse(readFileSync(join(process.cwd(), 'src/data/kontakt.json'), 'utf8'));
 
 const statusDot = (status: string) =>
   status === 'W przygotowaniu' ? 'dot-amber' : 'dot-green';
@@ -491,13 +497,13 @@ const statusDot = (status: string) =>
     {symulatory.map(sim => (
       <div class="sim-card">
         <div class="sim-card-type">{sim.type}</div>
-        <h3 set:html={sim.title.replace(' / ', '<br>')} />
+        <h3 set:html={(sim.title || '').replace(' / ', '<br>')} />
         <p>{sim.description}</p>
-        {sim.tags.split(',').map((tag: string) => (
+        {(sim.tags || '').split(',').map((tag: string) => (
           <span class="sim-tag">{tag.trim()}</span>
         ))}
         <div class="sim-status">
-          <span class={`dot ${statusDot(sim.status)}`}></span>
+          <span class={`dot ${statusDot(sim.status || '')}`}></span>
           {sim.status}
         </div>
       </div>
