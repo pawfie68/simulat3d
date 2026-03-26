@@ -1,8 +1,8 @@
 ---
-title: Airbus A320
-type: Wąskokadłubowy
-description: Pełny kokpit z dwoma stanowiskami, autentycznym layoutem paneli
-  MCDU, FCU i overhead. Obsługa X-Plane oraz MSFS.
-tags: Glass, cockpit,MCDU,FCU,Overhead,X-Plane, MSFS
+title: Airbus A330
+type: Szerokokadłubowy
+description: Rozszerzona wersja długodystansowa. Podwójne wyświetlacze ECAM,
+  panel FMGS i pełne oświetlenie kokpitu skali 1:1.
+tags: Wide body, FMGS, ECAM, 1:1 scale
 status: Dostępny w sprzedaży
 ---
