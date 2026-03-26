@@ -1,0 +1,50 @@
+backend:
+  name: github
+  repo: TWOJ_USERNAME/simulat3d
+  branch: main
+
+# Wymagane dla GitHub Pages (bez backendu serwerowego)
+local_backend: false
+
+media_folder: public/images
+public_folder: /simulat3d/images
+
+collections:
+  - name: "symulatory"
+    label: "Symulatory"
+    folder: "src/content/symulatory"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nazwa", name: "title", widget: "string" }
+      - { label: "Typ (np. Wąskokadłubowy)", name: "type", widget: "string" }
+      - { label: "Opis", name: "description", widget: "text" }
+      - { label: "Tagi (przecinki)", name: "tags", widget: "string" }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["Dostępny w sprzedaży", "Dostępny na zamówienie", "W przygotowaniu"]
+      - { label: "Zdjęcie", name: "image", widget: "image", required: false }
+
+  - name: "uslugi"
+    label: "Usługi"
+    folder: "src/content/uslugi"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nazwa usługi", name: "title", widget: "string" }
+      - { label: "Opis", name: "description", widget: "text" }
+      - { label: "Kolejność", name: "order", widget: "number" }
+
+  - name: "kontakt"
+    label: "Kontakt & O firmie"
+    files:
+      - label: "Dane kontaktowe"
+        name: "kontakt"
+        file: "src/content/kontakt.json"
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Strona www", name: "website", widget: "string" }
+          - { label: "Lokalizacja", name: "location", widget: "string" }
+          - { label: "Opis firmy (krótki)", name: "description", widget: "text" }
+          - { label: "Opis firmy (długi)", name: "description_long", widget: "text" }
