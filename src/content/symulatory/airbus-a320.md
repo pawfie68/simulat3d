@@ -1,8 +1,8 @@
 ---
-title: Airbus A330
-type: Szerokokadłubowy
-description: Rozszerzona wersja długodystansowa. Podwójne wyświetlacze ECAM,
-  panel FMGS i pełne oświetlenie kokpitu skali 1:1.
-tags: Wide body, FMGS, ECAM, 1:1 scale
-status: Dostępny w sprzedaży
+title: B737 / B777
+type: Wkrótce — Boeing
+description: Następna generacja — kokpity Boeinga. Prace projektowe w toku.
+  Zapisz się na listę oczekujących, by otrzymać powiadomienie o premierze.
+tags: B737 MAX, B777-300, EFB
+status: W przygotowaniu
 ---
