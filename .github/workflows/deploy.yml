@@ -27,8 +27,8 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: simulat@ftp.cluster130.hosting.ovh.net
-          username: simulat
+          server: ftp.cluster130.hosting.ovh.net
+          username: simulat@ftp.cluster130.hosting.ovh.net
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /www/
