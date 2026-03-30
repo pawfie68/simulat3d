@@ -6,7 +6,7 @@ backend:
   auth_endpoint: /auth
 
 media_folder: public/images
-public_folder: /simulat3d/images
+public_folder: /images
 
 collections:
   - name: "symulatory"
