@@ -8,14 +8,19 @@ function parseFrontmatter(content: string) {
   const data: Record<string, any> = {};
   const lines = match[1].split('\n');
   let currentKey = '';
-  let currentVal = '';
   for (const line of lines) {
+    if (/^ {2}- /.test(line)) {
+      if (currentKey && Array.isArray(data[currentKey])) {
+        data[currentKey].push(line.replace(/^ {2}- /, '').trim().replace(/^["']|["']$/g, ''));
+      }
+      continue;
+    }
     const colonIdx = line.indexOf(':');
     if (colonIdx === -1) continue;
     const key = line.slice(0, colonIdx).trim();
     const val = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, '');
     if (key) {
-      data[key] = val;
+      data[key] = val === '' ? [] : val;
       currentKey = key;
     }
   }
@@ -38,6 +43,10 @@ const kontakt = JSON.parse(readFileSync(join(process.cwd(), 'src/data/kontakt.js
 
 const statusDot = (status: string) =>
   status === 'W przygotowaniu' ? 'dot-amber' : 'dot-green';
+
+const galleryData = symulatory
+  .filter((s: any) => Array.isArray(s.images) && s.images.length > 0)
+  .map((s: any) => ({ title: s.title as string, images: s.images as string[] }));
 ---
 <!DOCTYPE html>
 <html lang="pl">
@@ -563,6 +572,102 @@ const statusDot = (status: string) =>
   }
   .cookie-reject:hover { border-color: var(--c-muted); color: var(--c-text); }
 
+  /* ── GALLERY ─────────────────────────────────────── */
+  #galeria { border-top: 1px solid var(--c-border); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 4px;
+    margin-top: 48px;
+  }
+  .gallery-item {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease, filter .35s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.05); filter: brightness(1.1); }
+  .gallery-item-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.65));
+    color: var(--c-text); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 24px 12px 10px;
+    opacity: 0; transition: opacity .25s;
+  }
+  .gallery-item:hover .gallery-item-caption { opacity: 1; }
+  .gallery-empty {
+    grid-column: 1/-1;
+    color: var(--c-dim); font-size: 14px; font-style: italic;
+    padding: 32px 0;
+  }
+
+  /* ── LIGHTBOX ─────────────────────────────────────── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s;
+  }
+  .lightbox.open { opacity: 1; pointer-events: all; }
+  .lightbox-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.92);
+  }
+  .lightbox-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    max-width: 90vw;
+  }
+  .lightbox-img {
+    max-height: 85vh; max-width: 90vw;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-caption {
+    margin-top: 12px;
+    color: var(--c-muted); font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-align: center;
+  }
+  .lightbox-close {
+    position: fixed; top: 16px; right: 20px; z-index: 2;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: var(--c-text); font-size: 28px; line-height: 1;
+    width: 44px; height: 44px; border-radius: 4px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.16); }
+  .lightbox-nav {
+    position: fixed; top: 50%; transform: translateY(-50%); z-index: 2;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: var(--c-text); font-size: 36px; line-height: 1;
+    width: 52px; height: 52px; border-radius: 4px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .lightbox-nav:hover { background: rgba(255,255,255,0.16); }
+  .lb-prev { left: 12px; }
+  .lb-next { right: 12px; }
+
+  /* ── SIM CARD IMAGE ──────────────────────────────── */
+  .sim-card-img {
+    height: 200px; overflow: hidden;
+    margin: -40px -40px 24px;
+  }
+  .sim-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+  }
+  .sim-card:hover .sim-card-img img { transform: scale(1.04); }
+
   @media (max-width: 928px) {
     nav .nav-links { display: none; }
   }
@@ -600,6 +705,7 @@ const statusDot = (status: string) =>
     <li><a href="#uslugi" data-i18n="nav-uslugi">Usługi</a></li>
     <li><a href="#o-firmie" data-i18n="nav-ofirmie">O firmie</a></li>
     <li><a href="#sklep" data-i18n="nav-sklep">Sklep</a></li>
+    <li><a href="#galeria" data-i18n="nav-gallery">Galeria</a></li>
     <li><a href="#kontakt" data-i18n="nav-kontakt">Kontakt</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px">
@@ -650,6 +756,11 @@ const statusDot = (status: string) =>
   <div class="sim-cards">
     {symulatory.map(sim => (
       <div class="sim-card">
+        {Array.isArray(sim.images) && sim.images.length > 0 && (
+          <div class="sim-card-img">
+            <img src={sim.images[0]} alt={sim.title} loading="lazy" />
+          </div>
+        )}
         <div class="sim-card-type">{sim.type}</div>
         <h3 set:html={(sim.title || '').replace(' / ', '<br>')} />
         <p>{sim.description}</p>
@@ -709,6 +820,12 @@ const statusDot = (status: string) =>
   </div>
 </section>
 
+<section id="galeria">
+  <div class="section-label" data-i18n="gallery-label">Galeria</div>
+  <h2 class="section-title" data-i18n="gallery-title">Galeria<br><em>zdjęć</em></h2>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
 <section id="sklep">
   <div class="section-label" data-i18n="shop-label">Sklep</div>
   <div class="shop-teaser">
@@ -762,6 +879,7 @@ const statusDot = (status: string) =>
   <ul class="footer-links">
     <li><a href="#simulators" data-i18n="footer-sim">Symulatory</a></li>
     <li><a href="#uslugi" data-i18n="footer-uslugi">Usługi</a></li>
+    <li><a href="#galeria" data-i18n="footer-gallery">Galeria</a></li>
     <li><a href="#kontakt" data-i18n="footer-kontakt">Kontakt</a></li>
   </ul>
   <span class="footer-copy" data-i18n="footer-copy">© 2025 Simulat3D. Wszelkie prawa zastrzeżone.</span>
@@ -778,10 +896,110 @@ const statusDot = (status: string) =>
   </div>
 </div>
 
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-backdrop" id="lb-backdrop"></div>
+  <button class="lightbox-close" id="lb-close" aria-label="Zamknij">×</button>
+  <button class="lightbox-nav lb-prev" id="lb-prev" aria-label="Poprzednie">‹</button>
+  <div class="lightbox-content">
+    <img class="lightbox-img" id="lb-img" src="" alt="" />
+    <div class="lightbox-caption" id="lb-caption"></div>
+  </div>
+  <button class="lightbox-nav lb-next" id="lb-next" aria-label="Następne">›</button>
+</div>
+
 <div class="wip-banner">
   <span class="wip-banner-label" data-i18n="wip-label">Strona w przebudowie</span>
   <p data-i18n="wip-text">Trwają prace nad nową wersją serwisu. Przepraszamy za utrudnienia — wróć wkrótce!</p>
 </div>
+
+<script is:inline define:vars={{ galleryData }}>
+(function() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid) return;
+
+  // Flatten all images from all simulators
+  const allImages = [];
+  galleryData.forEach(function(sim) {
+    sim.images.forEach(function(src) {
+      allImages.push({ src: src, caption: sim.title });
+    });
+  });
+
+  if (allImages.length === 0) {
+    const emptyMsg = document.createElement('p');
+    emptyMsg.className = 'gallery-empty';
+    emptyMsg.setAttribute('data-i18n', 'gallery-empty');
+    emptyMsg.textContent = 'Brak zdjęć — dodaj zdjęcia w panelu CMS.';
+    grid.appendChild(emptyMsg);
+    return;
+  }
+
+  allImages.forEach(function(item, idx) {
+    const el = document.createElement('div');
+    el.className = 'gallery-item';
+    el.tabIndex = 0;
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.caption;
+    img.loading = 'lazy';
+    const cap = document.createElement('div');
+    cap.className = 'gallery-item-caption';
+    cap.textContent = item.caption;
+    el.appendChild(img);
+    el.appendChild(cap);
+    el.addEventListener('click', function() { openLightbox(idx); });
+    el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') openLightbox(idx); });
+    grid.appendChild(el);
+  });
+
+  // Lightbox
+  var lbEl = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var lbCap = document.getElementById('lb-caption');
+  var lbClose = document.getElementById('lb-close');
+  var lbPrev = document.getElementById('lb-prev');
+  var lbNext = document.getElementById('lb-next');
+  var lbBackdrop = document.getElementById('lb-backdrop');
+  var currentIdx = 0;
+
+  function openLightbox(idx) {
+    currentIdx = idx;
+    showImage(currentIdx);
+    lbEl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lbEl.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function showImage(idx) {
+    var item = allImages[idx];
+    lbImg.src = item.src;
+    lbImg.alt = item.caption;
+    lbCap.textContent = item.caption + ' — ' + (idx + 1) + ' / ' + allImages.length;
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbBackdrop.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', function() {
+    currentIdx = (currentIdx - 1 + allImages.length) % allImages.length;
+    showImage(currentIdx);
+  });
+  lbNext.addEventListener('click', function() {
+    currentIdx = (currentIdx + 1) % allImages.length;
+    showImage(currentIdx);
+  });
+  document.addEventListener('keydown', function(e) {
+    if (!lbEl.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + allImages.length) % allImages.length; showImage(currentIdx); }
+    if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % allImages.length; showImage(currentIdx); }
+  });
+})();
+</script>
 
 <script is:inline>
 const t = {
@@ -790,6 +1008,7 @@ const t = {
     'nav-uslugi':    'Usługi',
     'nav-ofirmie':   'O firmie',
     'nav-sklep':     'Sklep',
+    'nav-gallery':   'Galeria',
     'nav-kontakt':   'Kontakt',
     'nav-cta':       'Napisz do nas',
     'hero-badge':    'Inżynieria / Symulacje / Druk 3D',
@@ -813,6 +1032,9 @@ const t = {
     'stat-a330':     'Wide-body sim',
     'stat-scale':    'Skala kokpitu',
     'stat-prod':     'Produkcja lokalna',
+    'gallery-label': 'Galeria',
+    'gallery-title': 'Galeria<br><em>zdjęć</em>',
+    'gallery-empty': 'Brak zdjęć — dodaj zdjęcia w panelu CMS.',
     'shop-label':    'Sklep',
     'shop-title':    'Sklep<br><em>wkrótce</em>',
     'shop-p':        'Pracujemy nad uruchomieniem sklepu online z panelami, komponentami i akcesoriami do symulatorów. Realizacja przez Shopify — bezpieczne płatności, szybka wysyłka.',
@@ -828,6 +1050,7 @@ const t = {
     'form-submit':   'Wyślij wiadomość',
     'footer-sim':    'Symulatory',
     'footer-uslugi': 'Usługi',
+    'footer-gallery':'Galeria',
     'footer-kontakt':'Kontakt',
     'footer-copy':   '© 2025 Simulat3D. Wszelkie prawa zastrzeżone.',
     'wip-label':     'Strona w przebudowie',
@@ -841,6 +1064,7 @@ const t = {
     'nav-uslugi':    'Services',
     'nav-ofirmie':   'About',
     'nav-sklep':     'Shop',
+    'nav-gallery':   'Gallery',
     'nav-kontakt':   'Contact',
     'nav-cta':       'Contact us',
     'hero-badge':    'Engineering / Simulation / 3D Printing',
@@ -864,6 +1088,9 @@ const t = {
     'stat-a330':     'Wide-body sim',
     'stat-scale':    'Cockpit scale',
     'stat-prod':     'Local production',
+    'gallery-label': 'Gallery',
+    'gallery-title': 'Photo<br><em>gallery</em>',
+    'gallery-empty': 'No photos yet — add images in the CMS panel.',
     'shop-label':    'Shop',
     'shop-title':    'Shop<br><em>coming soon</em>',
     'shop-p':        'We are working on launching an online store with panels, components and accessories for simulators. Powered by Shopify — secure payments, fast shipping.',
@@ -879,6 +1106,7 @@ const t = {
     'form-submit':   'Send message',
     'footer-sim':    'Simulators',
     'footer-uslugi': 'Services',
+    'footer-gallery':'Gallery',
     'footer-kontakt':'Contact',
     'footer-copy':   '© 2025 Simulat3D. All rights reserved.',
     'wip-label':     'Site under renovation',

@@ -23,7 +23,14 @@ collections:
         name: "status"
         widget: "select"
         options: ["Dostępny w sprzedaży", "Dostępny na zamówienie", "W przygotowaniu"]
-      - { label: "Zdjęcie", name: "image", widget: "image", required: false }
+      - label: "Zdjęcia"
+        name: "images"
+        widget: "list"
+        required: false
+        field:
+          label: "Zdjęcie"
+          name: "image"
+          widget: "image"
 
   - name: "uslugi"
     label: "Usługi"
