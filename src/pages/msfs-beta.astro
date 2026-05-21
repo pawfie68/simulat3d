@@ -310,7 +310,7 @@
     <h2>Enter Password</h2>
     <p>This page is restricted to beta testers only.</p>
     <input class="gate-input" type="password" id="pwd" placeholder="Password" autocomplete="off">
-    <button class="gate-btn" onclick="checkPassword()">Access</button>
+    <button class="gate-btn" id="access-btn" type="button">Access</button>
     <div class="gate-error" id="gate-error">Incorrect password. Please try again.</div>
   </div>
 </div>
@@ -372,6 +372,7 @@
           <h3>Clear the plugin folder</h3>
           <p>Navigate to the SkalarkiIO Profiler MSFS folder (default location) and <strong>delete all files</strong> inside it:</p>
           <br>
+          <p style="font-size:13px; color: var(--c-muted); margin-bottom: 8px;">Note: The folder name <code>MSFS2020</code> is unrelated to your MSFS version — the plugin works with both <strong style="color:var(--c-text)">MSFS 2020 and MSFS 2024</strong> regardless of the folder name.</p>
           <code>C:\Program Files (x86)\SkalarkiIO Profiler 5.1\MSFS2020</code>
         </div>
       </div>
@@ -421,7 +422,7 @@
 </div>
 
 <script>
-  // Allow Enter key to submit
+  document.getElementById('access-btn').addEventListener('click', checkPassword);
   document.getElementById('pwd').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') checkPassword();
   });
