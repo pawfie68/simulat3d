@@ -86,7 +86,7 @@ const galleryData = symulatory
   "name": "Simulat3D",
   "url": "https://simulat3d.eu",
   "logo": "https://simulat3d.eu/logo-full.svg",
-  "email": "info@simulat3d.eu",
+  "email": "office@simulat3d.eu",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "PL"
@@ -461,6 +461,12 @@ const galleryData = symulatory
   .contact-form textarea:focus { border-color: var(--c-accent); }
   .contact-form textarea { resize: vertical; min-height: 120px; }
   .contact-form ::placeholder { color: var(--c-dim); }
+  .cf-status {
+    font-size: 13px; padding: 10px 14px; border-radius: 3px;
+    border-left: 3px solid;
+  }
+  .cf-status.ok  { border-color: #4ade80; color: #4ade80; background: rgba(74,222,128,.08); }
+  .cf-status.err { border-color: #f87171; color: #f87171; background: rgba(248,113,113,.08); }
 
   /* ── FOOTER ──────────────────────────────────────── */
   footer {
@@ -859,14 +865,15 @@ const galleryData = symulatory
       </div>
     </div>
     <div>
-      <form class="contact-form" onsubmit="return false">
-        <input type="text" data-i18n-ph="form-name" placeholder="Imię i nazwisko" />
-        <input type="email" placeholder="E-mail" />
-        <input type="text" data-i18n-ph="form-topic" placeholder="Temat (np. A320 Simulator, PCB design...)" />
-        <textarea data-i18n-ph="form-msg" placeholder="Wiadomość..."></textarea>
-        <button type="submit" class="btn-primary" style="width:fit-content;border:none;cursor:pointer" data-i18n="form-submit">
+      <form class="contact-form" id="contact-form">
+        <input id="cf-name" type="text" data-i18n-ph="form-name" placeholder="Imię i nazwisko" required />
+        <input id="cf-email" type="email" placeholder="E-mail" required />
+        <input id="cf-topic" type="text" data-i18n-ph="form-topic" placeholder="Temat (np. A320 Simulator, PCB design...)" />
+        <textarea id="cf-msg" data-i18n-ph="form-msg" placeholder="Wiadomość..." required></textarea>
+        <button type="submit" class="btn-primary" id="cf-submit" style="width:fit-content;border:none;cursor:pointer" data-i18n="form-submit">
           Wyślij wiadomość
         </button>
+        <p id="cf-status" class="cf-status" style="display:none"></p>
       </form>
     </div>
   </div>
@@ -1048,6 +1055,9 @@ const t = {
     'form-topic':    'Temat (np. A320 Simulator, PCB design...)',
     'form-msg':      'Wiadomość...',
     'form-submit':   'Wyślij wiadomość',
+    'form-sending':  'Wysyłanie...',
+    'form-ok':       'Wiadomość wysłana! Odezwiemy się wkrótce.',
+    'form-err':      'Błąd wysyłania. Spróbuj ponownie lub napisz bezpośrednio na office@simulat3d.eu',
     'footer-sim':    'Symulatory',
     'footer-uslugi': 'Usługi',
     'footer-gallery':'Galeria',
@@ -1104,6 +1114,9 @@ const t = {
     'form-topic':    'Subject (e.g. A320 Simulator, PCB design...)',
     'form-msg':      'Message...',
     'form-submit':   'Send message',
+    'form-sending':  'Sending...',
+    'form-ok':       'Message sent! We will get back to you shortly.',
+    'form-err':      'Send error. Please try again or email us directly at office@simulat3d.eu',
     'footer-sim':    'Simulators',
     'footer-uslugi': 'Services',
     'footer-gallery':'Gallery',
@@ -1145,6 +1158,53 @@ setLang(saved);
 
 document.getElementById('btn-pl').addEventListener('click', () => setLang('pl'));
 document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+
+// Contact form
+(function() {
+  const WORKER_URL = 'https://simulat3d-contact.pawfie68.workers.dev';
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const lang = localStorage.getItem('lang') || 'pl';
+    const btn = document.getElementById('cf-submit');
+    const status = document.getElementById('cf-status');
+
+    btn.disabled = true;
+    btn.textContent = t[lang]['form-sending'];
+    status.style.display = 'none';
+    status.className = 'cf-status';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:    document.getElementById('cf-name').value.trim(),
+          email:   document.getElementById('cf-email').value.trim(),
+          topic:   document.getElementById('cf-topic').value.trim(),
+          message: document.getElementById('cf-msg').value.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        status.className = 'cf-status ok';
+        status.textContent = t[lang]['form-ok'];
+        form.reset();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      status.className = 'cf-status err';
+      status.textContent = t[lang]['form-err'];
+    } finally {
+      status.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = t[lang]['form-submit'];
+    }
+  });
+})();
 
 // Cookie banner
 (function() {
