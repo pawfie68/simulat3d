@@ -314,6 +314,8 @@ const galleryData = symulatory
     background: var(--c-accent);
   }
   .sim-list li:last-child { border-bottom: none; }
+  html[lang="pl"] [data-lang-items="en"] { display: none; }
+  html[lang="en"] [data-lang-items="pl"] { display: none; }
   .sim-status {
     margin-top: 24px;
     display: flex; align-items: center; gap: 8px;
@@ -778,8 +780,15 @@ const galleryData = symulatory
         <h3 set:html={(sim.title || '').replace(' / ', '<br>')} />
         <p>{sim.description}</p>
         {Array.isArray(sim.items) && sim.items.length > 0 && (
-          <ul class="sim-list">
+          <ul class="sim-list" data-lang-items="en">
             {sim.items.map((item: string) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        )}
+        {Array.isArray(sim.items_pl) && sim.items_pl.length > 0 && (
+          <ul class="sim-list" data-lang-items="pl">
+            {sim.items_pl.map((item: string) => (
               <li>{item}</li>
             ))}
           </ul>
