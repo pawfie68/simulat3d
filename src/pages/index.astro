@@ -299,14 +299,21 @@ const galleryData = symulatory
     text-transform: uppercase; letter-spacing: 0.02em; line-height: 1;
     margin-bottom: 12px;
   }
-  .sim-card p { color: var(--c-muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px; }
-  .sim-tag {
-    display: inline-block;
-    background: var(--c-bg);
-    border: 1px solid var(--c-border2);
-    color: var(--c-muted); font-size: 11px; letter-spacing: 0.08em;
-    padding: 3px 10px; border-radius: 2px; margin: 2px 2px 2px 0;
+  .sim-card p { color: var(--c-muted); font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+  .sim-list {
+    list-style: none; padding: 0; margin: 0 0 28px;
   }
+  .sim-list li {
+    color: var(--c-text); font-size: 14px; line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--c-border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sim-list li::before {
+    content: ''; flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--c-accent);
+  }
+  .sim-list li:last-child { border-bottom: none; }
   .sim-status {
     margin-top: 24px;
     display: flex; align-items: center; gap: 8px;
@@ -727,10 +734,10 @@ const galleryData = symulatory
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-badge" data-i18n="hero-badge">Inżynieria / Symulacje / Druk 3D</div>
+  <div class="hero-badge" data-i18n="hero-badge">PCB / Projekty 3D / Druk 3D</div>
   <h1>Engineering<br>beyond<br><em>limits</em></h1>
   <p class="hero-sub" data-i18n="hero-sub">
-    Projektujemy symulatory lotnicze, realizujemy projekty 3D, prototypy i systemy embedded — od modelu do gotowego produktu.
+    Projektujemy PCB, realizujemy projekty 3D i druk 3D. Budujemy symulatory kokpitów lotniczych — przygotowując każdy komponent do produkcji.
   </p>
   <div class="hero-actions">
     <a href="#simulators" class="btn-primary" data-i18n="hero-btn1">Zobacz symulatory</a>
@@ -770,9 +777,13 @@ const galleryData = symulatory
         <div class="sim-card-type">{sim.type}</div>
         <h3 set:html={(sim.title || '').replace(' / ', '<br>')} />
         <p>{sim.description}</p>
-        {(sim.tags || '').split(',').map((tag: string) => (
-          <span class="sim-tag">{tag.trim()}</span>
-        ))}
+        {Array.isArray(sim.items) && sim.items.length > 0 && (
+          <ul class="sim-list">
+            {sim.items.map((item: string) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        )}
         <div class="sim-status">
           <span class={`dot ${statusDot(sim.status || '')}`}></span>
           {sim.status}
@@ -1018,8 +1029,8 @@ const t = {
     'nav-gallery':   'Galeria',
     'nav-kontakt':   'Kontakt',
     'nav-cta':       'Napisz do nas',
-    'hero-badge':    'Inżynieria / Symulacje / Druk 3D',
-    'hero-sub':      'Projektujemy symulatory lotnicze, realizujemy projekty 3D, prototypy i systemy embedded — od modelu do gotowego produktu.',
+    'hero-badge':    'PCB / Projekty 3D / Druk 3D',
+    'hero-sub':      'Projektujemy PCB, realizujemy projekty 3D i druk 3D. Budujemy symulatory kokpitów lotniczych — przygotowując każdy komponent do produkcji.',
     'hero-btn1':     'Zobacz symulatory',
     'hero-btn2':     'Nasze usługi',
     'hero-scroll':   'Przewiń w dół',
@@ -1077,8 +1088,8 @@ const t = {
     'nav-gallery':   'Gallery',
     'nav-kontakt':   'Contact',
     'nav-cta':       'Contact us',
-    'hero-badge':    'Engineering / Simulation / 3D Printing',
-    'hero-sub':      'We design flight simulators, deliver 3D projects, prototypes and embedded systems — from model to finished product.',
+    'hero-badge':    'PCB / 3D Design / 3D Printing',
+    'hero-sub':      'We design PCBs, carry out 3D modelling and 3D printing. We build flight cockpit simulators — preparing every component for production.',
     'hero-btn1':     'View simulators',
     'hero-btn2':     'Our services',
     'hero-scroll':   'Scroll down',

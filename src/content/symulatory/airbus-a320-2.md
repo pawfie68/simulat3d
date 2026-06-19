@@ -1,8 +1,11 @@
 ---
 title: Airbus A320
-type: Wąskokadłubowy
-description: Pełny kokpit z dwoma stanowiskami, autentycznym layoutem paneli
-  MCDU, FCU i overhead. Obsługa X-Plane oraz MSFS.
-tags: Glass cockpit, MCDU / FCU, Overhead, X-Plane, MSFS
+type: A32X Product Line
+description: Komponenty i panele dla rodziny Airbus A320/A321/A319 — projektowane i produkowane w Polsce.
+items:
+  - A32X DRAIMS
+  - A32X DCDU
+  - A32X cockpit customization
 status: Dostępny w sprzedaży
+order: 1
 ---
