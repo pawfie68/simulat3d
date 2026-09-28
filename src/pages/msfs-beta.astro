@@ -1,5 +1,5 @@
 ---
-// MSFS Beta installation page — password protected (client-side)
+// Beta authentication and downloads are validated by the PHP endpoint.
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -8,10 +8,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MSFS Interface — Beta Installation | Simulat3D</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
+  .access-actions { display:flex; align-items:center; gap:14px; }
+  .access-actions a { color:#52caff; text-decoration:none; font-size:14px; }
+  .access-actions button { background:transparent; color:#e8eaed; border:1px solid #647386; border-radius:4px; padding:8px 12px; font:inherit; cursor:pointer; }
+  .access-actions button:hover { border-color:#52caff; }
+  .gate-box a { color:#52caff; }
+  :focus-visible { outline:2px solid #52caff; outline-offset:4px; }
   :root {
     --c-bg: #0a0c10;
     --c-bg2: #111318;
@@ -309,9 +313,10 @@
     <div class="gate-badge">Beta Access</div>
     <h2>Enter Password</h2>
     <p>This page is restricted to beta testers only.</p>
-    <input class="gate-input" type="password" id="pwd" placeholder="Password" autocomplete="off">
+    <input class="gate-input" type="password" id="pwd" placeholder="Password" autocomplete="current-password" maxlength="256" aria-label="Beta access password">
     <button class="gate-btn" id="access-btn" type="button">Access</button>
-    <div class="gate-error" id="gate-error">Incorrect password. Please try again.</div>
+    <p style="font-size:13px;margin-top:16px;color:var(--c-muted)">Access is remembered for 7 days on this browser using an essential session cookie. <a href="/privacy/#en">Privacy</a></p>
+    <div role="status" class="gate-error" id="gate-error">Incorrect password. Please try again.</div>
   </div>
 </div>
 
@@ -319,7 +324,7 @@
 <div id="content">
   <header>
     <a href="/" class="header-logo">Simulat<span>3D</span></a>
-    <span class="header-badge">Beta</span>
+    <div class="access-actions"><a href="/privacy/#en">Privacy</a><button id="logout-btn" type="button">Sign out</button></div>
   </header>
 
   <main>
@@ -336,7 +341,7 @@
         <strong>MSFS Interface — Beta Package</strong>
         <span>SkalarkiIO Profiler 5.1 compatible</span>
       </div>
-      <a id="msfs-download-btn" href="#" class="btn-download" download>
+      <a id="msfs-download-btn" href="/api/beta.php?action=download" class="btn-download" download>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/>
@@ -422,32 +427,44 @@
 </div>
 
 <script>
-  document.getElementById('access-btn').addEventListener('click', checkPassword);
-  document.getElementById('pwd').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPassword();
-  });
-
-  fetch('/downloads/version.json')
-    .then(r => r.json())
-    .then(data => {
-      const btn = document.getElementById('msfs-download-btn');
-      if (btn && data.version) {
-        btn.href = `/downloads/SKALARKIe_MSFSInterface_v${data.version}.zip`;
-      }
-    });
-
-  function checkPassword() {
-    const input = document.getElementById('pwd').value;
-    if (input === 'BetaTest2026') {
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
-    } else {
-      const err = document.getElementById('gate-error');
-      err.style.display = 'block';
-      document.getElementById('pwd').value = '';
-      document.getElementById('pwd').focus();
-    }
+  const gate = document.getElementById('gate');
+  const content = document.getElementById('content');
+  const error = document.getElementById('gate-error');
+  const button = document.getElementById('access-btn');
+  const password = document.getElementById('pwd') as HTMLInputElement;
+  function showAccess(allowed: boolean) {
+    gate.style.display = allowed ? 'none' : 'flex';
+    content.style.display = allowed ? 'block' : 'none';
   }
+  function showError(message: string) { error.textContent = message; error.style.display = 'block'; }
+  async function request(action: string, body?: object) {
+    const response = await fetch('/api/beta.php?action=' + action, {
+      method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
+      headers: body ? { 'Content-Type': 'application/json', 'X-Simulat3D': 'beta' } : {},
+      body: body ? JSON.stringify(body) : undefined
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Access is unavailable. Please try again later.');
+    return data;
+  }
+  async function checkPassword() {
+    button.setAttribute('disabled', ''); error.style.display = 'none';
+    try { await request('login', { password: password.value }); password.value = ''; showAccess(true); }
+    catch (e) { showError(e instanceof Error ? e.message : 'Unable to sign in.'); }
+    finally { button.removeAttribute('disabled'); }
+  }
+  button.addEventListener('click', checkPassword);
+  password.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    try { await request('logout', {}); showAccess(false); password.focus(); }
+    catch { alert('Unable to sign out. Please try again.'); }
+  });
+  async function restoreAccess() {
+    try { const data = await request('status'); showAccess(data.authenticated === true); }
+    catch { showAccess(false); showError('Beta access is unavailable. Please try again later.'); }
+  }
+  restoreAccess();
+  window.addEventListener('pageshow', e => { if (e.persisted) restoreAccess(); });
 </script>
 
 </body>

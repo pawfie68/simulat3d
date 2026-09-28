@@ -1,0 +1,2 @@
+# Block legacy public packages, including files left by earlier FTP deployments.
+Require all denied

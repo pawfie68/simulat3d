@@ -1,0 +1,61 @@
+---
+import privacy from '../data/privacy.json';
+const ready = privacy.mailProvider && privacy.enquiryRetentionMonths && privacy.providerReviewConfirmed && privacy.hostingRetention && privacy.transferSafeguards && privacy.deploymentVerified;
+---
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Prywatność i cookies | Simulat3D</title>
+  <link rel="stylesheet" href="/fonts/fonts.css" />
+</head>
+<body>
+  <main>
+    <nav><a href="/">← Simulat3D</a><a href="#en" lang="en">English</a></nav>
+    {!ready && <aside>Wersja robocza do podglądu. Przed publikacją trzeba potwierdzić dostawców, okresy przechowywania danych i konfigurację hostingu. / Draft: provider, retention and hosting checks are pending.</aside>}
+    <p class="eyebrow">Simulat3D · Prywatność</p>
+    <h1>Twoje dane.<br />Jasne zasady.</h1>
+    <p>Nie używamy narzędzi reklamowych ani analitycznych śledzących odwiedzających. Fonty są dostarczane z naszej domeny. Nie sprzedajemy danych i nie podejmujemy decyzji na podstawie profilowania.</p>
+    <h2>Administrator i kontakt</h2>
+    <p>Administratorem danych jest <strong>{privacy.controller}</strong>, {privacy.address}. W sprawach danych osobowych napisz na <a href={`mailto:${privacy.email}`}>{privacy.email}</a>.</p>
+    <h2>Kontakt z nami</h2>
+    <p>Jeżeli wyślesz formularz, otrzymamy podane imię, adres e-mail, temat i treść wiadomości. Używamy ich, aby odpowiedzieć i prowadzić korespondencję. Podanie danych jest dobrowolne, ale adres e-mail i treść zapytania są potrzebne do odpowiedzi. Nie przesyłaj danych wrażliwych ani haseł.</p>
+    <p>Podstawą jest art. 6 ust. 1 lit. b RODO, gdy na Twoje żądanie podejmujemy działania przed zawarciem umowy, lub art. 6 ust. 1 lit. f RODO — nasz uzasadniony interes polegający na obsłudze pozostałej korespondencji i ochronie przed roszczeniami. Formularz nie zapisuje Cię do newslettera.</p>
+    <p>Korespondencję dotyczącą zwykłych zapytań przechowujemy {privacy.enquiryRetentionMonths === 1 ? 'przez maksymalnie miesiąc po zakończeniu rozmowy' : privacy.enquiryRetentionMonths ? `przez maksymalnie ${privacy.enquiryRetentionMonths} miesięcy po zakończeniu rozmowy` : '[okres do potwierdzenia przed publikacją]'}. Dokumenty związane z umową, obowiązkiem prawnym lub konkretnym sporem mogą być przechowywane dłużej — przez okres wymagany prawem lub niezbędny do rozstrzygnięcia sprawy.</p>
+    <h2>Dostęp do MSFS beta</h2>
+    <p>Beta używa wspólnego hasła, bez indywidualnych kont. Hasło jest weryfikowane na serwerze. Przeglądarka przechowuje losowy identyfikator sesji, ważny maksymalnie 7 dni od zalogowania. Nie zapisujemy hasła w przeglądarce ani nie prowadzimy imiennego rejestru pobrań. Wylogowanie unieważnia bieżącą sesję.</p>
+    <p>W celu ograniczania prób odgadnięcia hasła serwer przetwarza adres IP i tworzy jego identyfikator HMAC. To dane pseudonimizowane, a nie anonimowe. Licznik prób działa przez 15 minut; stare wpisy usuwa kolejne logowanie lub codzienne zadanie porządkowe. Pliki sesji są usuwane najpóźniej w codziennym cyklu po upływie 7 dni. Podstawą przetwarzania zabezpieczeń jest art. 6 ust. 1 lit. f RODO — ochrona serwisu przed nadużyciami.</p>
+    <h2>Cookies i pamięć przeglądarki</h2>
+    <table><thead><tr><th>Element</th><th>Cel i okres</th></tr></thead><tbody>
+      <tr><td><code>lang</code> w sessionStorage</td><td>Zapamiętanie wybranego przez Ciebie języka w sesji karty. Zapis następuje dopiero po zmianie języka. Zwykle znika po zamknięciu karty; przywracanie sesji przeglądarki może go zachować.</td></tr>
+      <tr><td><code>__Secure-simulat3d_beta</code></td><td>Niezbędny cookie logowania do bety, do 7 dni lub wylogowania; HttpOnly, Secure, SameSite=Strict. Nie służy do śledzenia.</td></tr>
+    </tbody></table>
+    <p>Te mechanizmy służą wyłącznie funkcjom, o które prosisz. Nie zbieramy zgody na nieistniejące cookies analityczne. Możesz usunąć dane witryny w przeglądarce, zmienić język lub wylogować się z bety.</p>
+    <h2>Odbiorcy i infrastruktura</h2>
+    <p>Hosting zapewnia OVHcloud. Formularz przechodzi przez Cloudflare Workers i usługę wysyłki Resend; wiadomość trafia do naszej skrzynki obsługiwanej przez {privacy.mailProvider || '[dostawca do potwierdzenia]'}. Upoważnione osoby mają dostęp do korespondencji w zakresie potrzebnym do obsługi sprawy. Dostawcy mogą przetwarzać dane techniczne, takie jak IP, czas żądania i informacje o przeglądarce, w logach infrastruktury.</p>
+    <p>Przechowywanie logów i danych u dostawców: {privacy.hostingRetention || '[do potwierdzenia z konfiguracją i umowami dostawców]'}. Zasady ewentualnego przekazywania danych poza EOG i stosowane zabezpieczenia: {privacy.transferSafeguards || '[do potwierdzenia przed publikacją]'}.</p>
+    <p>Panel <code>/admin/</code> jest przeznaczony dla redaktorów. Korzysta z Decap CMS, GitHub OAuth i Cloudflare, a bibliotekę panelu pobiera z unpkg. Uruchomienie panelu powoduje połączenia z tymi usługami; token dostępu do GitHub może być przechowywany przez CMS w przeglądarce do wylogowania lub usunięcia danych. Panel nie jest wymagany do przeglądania strony ani pobierania bety.</p>
+    <h2>Twoje prawa</h2>
+    <p>Możesz zażądać dostępu do danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania. Prawo do przenoszenia danych przysługuje w przypadkach określonych w RODO. Możesz wnieść sprzeciw wobec przetwarzania opartego na uzasadnionym interesie z przyczyn związanych z Twoją sytuacją. Jeżeli w przyszłości przetwarzanie będzie oparte na zgodzie, będzie można ją wycofać bez wpływu na wcześniejsze zgodne z prawem przetwarzanie.</p>
+    <p>Skontaktuj się z nami pod adresem powyżej. Masz również prawo złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych lub właściwego organu nadzorczego w UE.</p>
+    <hr />
+    <section id="en" lang="en">
+      <p class="eyebrow">Privacy · English</p><h2>Your data and privacy</h2>
+      <p>The controller is <strong>{privacy.controller}</strong>, {privacy.address}. Contact: <a href={`mailto:${privacy.email}`}>{privacy.email}</a>.</p>
+      <p>We do not use advertising or visitor analytics trackers. Fonts are hosted on our own domain. We do not sell data or make automated profiling decisions.</p>
+      <h3>Messages</h3><p>The contact form sends your name, email address, subject and message through Cloudflare Workers and Resend to our mailbox, provided by {privacy.mailProvider || '[provider awaiting confirmation]'}. We process these details to answer enquiries under GDPR Article 6(1)(b) for requested pre-contract steps or Article 6(1)(f) for our legitimate interests in correspondence and legal claims. Providing data is voluntary; an email address and message are needed for a reply. No newsletter subscription is created. Please do not send sensitive data or passwords.</p>
+      <p>Ordinary enquiries are retained {privacy.enquiryRetentionMonths === 1 ? 'for up to one month after the conversation ends' : privacy.enquiryRetentionMonths ? `for up to ${privacy.enquiryRetentionMonths} months after the conversation ends` : '[retention period awaiting confirmation]'}. Contractual records, legal obligations and specific disputes can require longer retention, limited to the applicable legal period or resolution of the matter.</p>
+      <h3>Beta access and browser storage</h3><p>Beta access uses a shared password, not personal accounts. The server verifies the password and issues an essential HttpOnly, Secure, SameSite=Strict cookie named <code>__Secure-simulat3d_beta</code>. It lasts at most 7 days from login; signing out revokes the session. We do not store the password in your browser or keep a named download history. Expired session files are removed in the daily cleanup cycle after 7 days.</p>
+      <p>For security, the server derives a pseudonymous HMAC identifier from your IP to limit login attempts for 15 minutes. Old entries are removed on subsequent logins or by daily cleanup. Security processing is based on our legitimate interest in protecting the service, Article 6(1)(f). The <code>lang</code> sessionStorage value is only written after you select a language and lasts for the tab session; browser session restoration may preserve it. These technologies support functions you request, not tracking. You can clear site data, change language or sign out.</p>
+      <h3>Providers and international transfers</h3><p>OVHcloud hosts the site. Cloudflare, Resend and our mailbox provider process correspondence; authorised staff access it as needed. Infrastructure logs may contain IP addresses, request times and browser information. Provider retention: {privacy.hostingRetention || '[awaiting confirmation]'}. International transfers and safeguards: {privacy.transferSafeguards || '[awaiting confirmation]'}.</p>
+      <p>The editor-only <code>/admin/</code> uses Decap CMS, GitHub OAuth, Cloudflare and unpkg. Opening it connects to these services. CMS access tokens may remain in browser storage until logout or removal. This panel is not needed for browsing or beta downloads.</p>
+      <h3>Your rights</h3><p>You may request access, correction, erasure and restriction, and portability where applicable. You may object to legitimate-interest processing on grounds relating to your situation. If consent is used in the future, you may withdraw it without affecting prior lawful processing. Contact us using the address above. You may complain to the Polish UODO or your competent EU supervisory authority.</p>
+    </section>
+    <footer><a href="/">Simulat3D</a> · <a href="/msfs-beta/">MSFS beta</a></footer>
+  </main>
+</body>
+</html>
+<style>
+  :global(body){margin:0;background:#0a0c10;color:#e8eaed;font-family:'Barlow',sans-serif;line-height:1.7}main{max-width:860px;margin:auto;padding:32px 24px 64px}nav{display:flex;justify-content:space-between}a{color:#52caff}h1,h2,h3{font-family:'Barlow Condensed',sans-serif;line-height:1.15}h1{font-size:clamp(44px,8vw,76px);margin:16px 0 32px}h2{font-size:30px;margin-top:40px}h3{font-size:24px}.eyebrow{color:#52caff;text-transform:uppercase;letter-spacing:.13em;margin-top:64px}aside{padding:18px;border:1px solid #d7b86b;background:#282217;margin-top:24px}table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:16px 12px;border:1px solid #39414e;text-align:left;vertical-align:top}code{overflow-wrap:anywhere}hr{border:0;border-top:1px solid #39414e;margin:64px 0}footer{margin-top:60px}section{scroll-margin-top:24px}
+</style>

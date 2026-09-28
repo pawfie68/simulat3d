@@ -22,3 +22,7 @@ Thumbs.db
 
 # Local notes
 claude.md
+
+# Server secrets and private beta artifacts
+simulat3d-private/
+*.local.php
