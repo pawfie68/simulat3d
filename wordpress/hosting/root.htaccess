@@ -1,0 +1,20 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+<FilesMatch "(^\.|\.backup$|wp-config\.php$)">
+  Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^simulat3d\.eu$ [NC]
+RewriteRule ^ https://simulat3d.eu%{REQUEST_URI} [R=301,L]
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^privacy/?$ /prywatnosc/ [R=301,L]
+RewriteRule ^wp-preview-s3d/?$ / [R=301,L]
+RewriteRule ^wp-admin(/.*)?$ /wordpress/wp-admin$1 [R=302,L]
+RewriteRule ^wp-login\.php$ /wordpress/wp-login.php [R=302,L]
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
