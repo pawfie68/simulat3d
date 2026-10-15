@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": { "contentSize": "1160px", "wideSize": "1320px" },
+    "color": { "defaultPalette": false, "palette": [
+      { "slug": "background", "name": "Tło", "color": "#0a0c10" },
+      { "slug": "surface", "name": "Karty", "color": "#111720" },
+      { "slug": "text", "name": "Tekst", "color": "#e8eaed" },
+      { "slug": "muted", "name": "Tekst pomocniczy", "color": "#aeb8c7" },
+      { "slug": "accent", "name": "Niebieski Simulat3D", "color": "#00b4ff" }
+    ] },
+    "typography": { "fontFamilies": [
+      { "slug": "body", "name": "Barlow", "fontFamily": "Barlow, sans-serif", "fontFace": [
+        { "fontFamily": "Barlow", "fontWeight": "400", "fontStyle": "normal", "src": ["file:./assets/fonts/Barlow-Regular.ttf"] },
+        { "fontFamily": "Barlow", "fontWeight": "600", "fontStyle": "normal", "src": ["file:./assets/fonts/Barlow-SemiBold.ttf"] }
+      ] },
+      { "slug": "heading", "name": "Barlow Condensed", "fontFamily": "'Barlow Condensed', sans-serif", "fontFace": [
+        { "fontFamily": "Barlow Condensed", "fontWeight": "600", "fontStyle": "normal", "src": ["file:./assets/fonts/BarlowCondensed-SemiBold.ttf"] },
+        { "fontFamily": "Barlow Condensed", "fontWeight": "700", "fontStyle": "normal", "src": ["file:./assets/fonts/BarlowCondensed-Bold.ttf"] }
+      ] }
+    ] }
+  },
+  "styles": {
+    "color": { "background": "var:preset|color|background", "text": "var:preset|color|text" },
+    "spacing": { "padding": { "left": "24px", "right": "24px" }, "blockGap": "24px" },
+    "typography": { "fontFamily": "var:preset|font-family|body", "fontSize": "18px", "lineHeight": "1.6" },
+    "elements": {
+      "heading": { "typography": { "fontFamily": "var:preset|font-family|heading", "fontWeight": "600" } },
+      "link": { "color": { "text": "#52caff" } },
+      "button": { "color": { "background": "var:preset|color|accent", "text": "#05101a" }, "border": { "radius": "4px" }, "spacing": { "padding": { "top": "14px", "bottom": "14px", "left": "24px", "right": "24px" } }, "typography": { "fontWeight": "600" } }
+    }
+  },
+  "templateParts": [{ "name": "header", "title": "Nagłówek", "area": "header" }, { "name": "footer", "title": "Stopka", "area": "footer" }]
+}

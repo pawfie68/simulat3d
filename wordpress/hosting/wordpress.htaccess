@@ -1,0 +1,5 @@
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "(^\.|wp-config\.php$|xmlrpc\.php$|readme\.html$|license\.txt$)">
+ Require all denied
+</FilesMatch>
